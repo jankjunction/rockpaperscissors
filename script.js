@@ -1,4 +1,6 @@
 let playerScore = 0;
+let computerScore = 0;
+let result = '';
 
 const gameDiv = document.querySelector('#gameDiv');
 const scoreDiv = document.createElement('div');
@@ -8,7 +10,7 @@ const paperDiv = document.createElement('div');
 const scissorsDiv = document.createElement('div');
 const resultsDiv = document.createElement('div');
 
-scoreDiv.textContent = 'Score: ' + playerScore;
+scoreDiv.textContent = 'Your Score: ' + playerScore + `   Computer Score: ` + computerScore;
 rockDiv.textContent = 'rock';
 paperDiv.textContent = 'paper';
 scissorsDiv.textContent = 'scissors';
@@ -24,6 +26,7 @@ choicesDiv.append(rockDiv, paperDiv, scissorsDiv);
 
 // Game Styling
 gameDiv.style.maxWidth = '800px';
+gameDiv.style.justifyContent = 'center';
 
 // Score Styling
 scoreDiv.style.display = 'flex';
@@ -37,9 +40,13 @@ choicesDiv.style.paddingRight = '60px';
 choicesDiv.style.justifyContent = 'space-between';
 
 
-rockDiv.style.cursor = 'pointer';
-paperDiv.style.cursor = 'pointer';
-scissorsDiv.style.cursor = 'pointer';
+rockDiv.style.cursor = 'default';
+paperDiv.style.cursor = 'default';
+scissorsDiv.style.cursor = 'default';
+
+// choicesDiv.array.forEach(element => {
+//     element.style.cursor = 'default';
+// });
 
 // Results Styling
 resultsDiv.style.display = 'flex';
@@ -49,18 +56,33 @@ resultsDiv.style.paddingRight = '60px';
 resultsDiv.style.justifyContent = 'center';
 
 // Event Listening
+
 rockDiv.addEventListener('click', () => {
-    playRound(rockDiv.textContent, computerPlay);
+    playRound('rock', computerPlay());
+    scoring();
 });
 
+
+
 paperDiv.addEventListener('click', () => {
-    playRound(paperDiv.textContent, computerPlay);
+    playRound('paper', computerPlay());
+    scoring();
 });
 
 scissorsDiv.addEventListener('click', () => {
-    playRound(scissorsDiv.textContent, computerPlay);
+    playRound('scissors', computerPlay());
+    scoring();
+
 });
 
+
+function scoring () {
+    resultsDiv.textContent = result;
+    if (result === 'tie') {scoreDiv.textContent = 'Your Score: ' + playerScore + `   Computer Score: ` + computerScore; return;};
+    (result === 'win') ? playerScore++ : computerScore++
+    (playerScore >= 5) ? scoreDiv.textContent = 'You Win!': scoreDiv.textContent = 'Your Score: ' + playerScore + `   Computer Score: ` + computerScore;
+    if (computerScore >= 5) {scoreDiv.textContent = 'You Lose!';}
+};
 
 //computerPlay  Need to create a function that will randomly return Rock Paper or Scissors.  
 
@@ -74,20 +96,20 @@ function computerPlay () {
     } else if (computerChoice === 2) {
         return 'paper';
     } else return 'scissors';
-}
+};
 
 //playRound  Create a function that takes the input playerSelection and computerSelection and determines a winner or if the round tied.
 
 function playRound (playerSelection, computerSelection) {
-    let result = '';
+
     if (playerSelection === computerSelection) {
-        result += 'tie';
+        result = 'tie';
     } else {
-        ((playerSelection === 'rock' && computerSelection === 'paper') || (playerSelection === 'scissors' && computerSelection === 'rock') || (playerSelection === 'paper' && computerSelection === 'scissors')) ? result +='lose' : result +='win';
+        ((playerSelection === 'rock' && computerSelection === 'paper') || (playerSelection === 'scissors' && computerSelection === 'rock') || (playerSelection === 'paper' && computerSelection === 'scissors')) ? result ='lose' : result ='win';
     }
     return result;
 
-}
+};
 
 //game() Create a function that calls playRound 5 times and keeps score and reports a winner at the end.
 
@@ -112,7 +134,7 @@ function playRound (playerSelection, computerSelection) {
 //     console.log(computerScore);
    
 //     playerScore > computerScore ? console.log('You Win') : console.log('You Lose');
-// }
+// };
 
 
 
